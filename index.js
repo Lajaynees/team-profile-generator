@@ -34,7 +34,7 @@ const initial = () => {
         }
     ]).then(response => {
         const newManager = newManager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNumber)
-        employee.push(newManager)
+        teamMembers.push(newManager)
         addTeam();
     })
 }
@@ -64,7 +64,7 @@ const newEngineer = () => {
         }
     ]).then(response => {
         const newEngineer = newEngineer(response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub)
-        employee.push(newEngineer);
+        teamMembers.push(newEngineer);
         addTeam();
     })
 }
@@ -93,13 +93,37 @@ const newIntern = () => {
         }
     ]).then(response => {
         const newIntern = newIntern(response.internName, response.internId, response.internEmail, response.internSchool)
-        employee.push(newIntern);
+        teamMembers.push(newIntern);
         addTeam();
       
     });
+}
+
+//connect to html and template
+
+const addTeam = () => {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "What type of employee do you want to add to your team?",
+            choices: ["Engineer", "Intern", "none"],
+            name: "addEmployee"
+        }
+    ]).then((response) => {
+        if (response.addEmployee === "Engineer") {
+            newEngineer();
+        } else if (response.addEmployee === "Intern") {
+            newIntern();
+        } else {
+          const generatedTemplate = htmlTemplate.renderTemplate(employee);
+          htmlTemplate.outputHTML(generatedTemplate);
+        }
+    });
+
 }
 
 
 
 
 initial();
+// Worked with tutor-Andrew Harmon on initial push-finished 11/01
